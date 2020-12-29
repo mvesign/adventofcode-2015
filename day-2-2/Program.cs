@@ -8,15 +8,14 @@ namespace day_2_2
     {
         static void Main(string[] args)
         {
-            var length = 0;
-            foreach (var line in File.ReadAllLines("input.txt"))
-            {
-                var dimensions = line.Split("x").Select(x => int.Parse(x)).ToArray();
-                length += 2 * dimensions.Where(x => x != dimensions.Max()).Sum();
-                length += dimensions[0] * dimensions[1] * dimensions[2];
-            }
-
-            Console.WriteLine(length);
+            Console.WriteLine(
+                File.ReadAllLines("input.txt")
+                    .Select(s => s.Split('x'))
+                    .Select(x => x.Select(int.Parse))
+                    .Select(w => w.OrderBy(x => x).ToArray())
+                    .Select(w => 2 * w[0] + 2 * w[1] + w[0] * w[1] * w[2])
+                    .Sum()
+            );
         }
     }
 }
