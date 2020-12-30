@@ -26,9 +26,13 @@ namespace day_5_1
                 if (vowels.Where(line.Contains).Count() < 3)
                     continue;
                 
-                //TODO It contains at least one letter that appears twice in a row.
-
-                niceStrings.Add(line);
+                var prev = 0;
+                for(var cur = 1; cur < line.Length; cur++, prev++)
+                    if (line[cur] == line[prev])
+                    {
+                        niceStrings.Add(line);
+                        break;
+                    }
             }
 
             Console.WriteLine(niceStrings.Count());
