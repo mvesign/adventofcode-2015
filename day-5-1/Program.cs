@@ -15,8 +15,6 @@ namespace day_5_1
                 "ab", "cd", "pq", "xy"
             };
 
-            Console.WriteLine(vowels);
-
             var niceStrings = new List<string>();
             foreach(var line in File.ReadAllLines("input.txt"))
             {
@@ -28,7 +26,7 @@ namespace day_5_1
                 
                 var prev = 0;
                 for(var cur = 1; cur < line.Length; cur++, prev++)
-                    if (line[cur] == line[prev])
+                    if (line[cur].Equals(line[prev]))
                     {
                         niceStrings.Add(line);
                         break;
