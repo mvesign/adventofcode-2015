@@ -8,7 +8,8 @@ namespace day_4_2
     {
         static void Main(string[] args)
         {
-            var secret = "iwrupvqb";
+            const string secret = "iwrupvqb";
+            var startingValue = new string('0', 6);
 
             using var md5 = MD5.Create();
 
@@ -20,7 +21,7 @@ namespace day_4_2
                         )
                     )
                     .Replace("-","")
-                    .StartsWith(new string('0', 6))
+                    .StartsWith(startingValue)
                 )
                 {
                     Console.WriteLine(count);
