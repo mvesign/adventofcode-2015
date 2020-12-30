@@ -29,7 +29,7 @@ namespace day_3_1
                 current = NextHouse(current.x, current.y, direction);
             }
 
-            Console.WriteLine(houses.Count());
+            Console.WriteLine(houses.Count);
         }
     }
 }
