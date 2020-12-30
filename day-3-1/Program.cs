@@ -9,22 +9,24 @@ namespace day_3_1
     {
         static void Main(string[] args)
         {
-            var x = 0;
-            var y = 0;
-            var houses = new List<(int, int)>();
-            foreach(var direction in File.ReadAllText("input.txt"))
-            {
-                var house = direction switch
+            (int x, int y) NextHouse(int x, int y, char direction) =>
+                direction switch
                 {
-                    '^' => (x, y++),
-                    '>' => (x++, y),
-                    'v' => (x, y--),
-                    '<' => (x--, y),
+                    '^' => (x, y+1),
+                    '>' => (x+1, y),
+                    'v' => (x, y-1),
+                    '<' => (x-1, y),
                     _ => (x, y)
                 };
 
-                if (!houses.Contains(house))
-                    houses.Add(house);
+            var current = NextHouse(0, 0, ' ');
+            var houses = new List<(int, int)>();
+            foreach(var direction in File.ReadAllText("input.txt"))
+            {
+                if (!houses.Contains(current))
+                    houses.Add(current);
+
+                current = NextHouse(current.x, current.y, direction);
             }
 
             Console.WriteLine(houses.Count());
