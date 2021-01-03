@@ -12,18 +12,14 @@ namespace day_5_1
             const string vowels = "aeiou";
             var disallowed = new [] { "ab", "cd", "pq", "xy" };
 
-            var niceStrings = new List<string>();
-            foreach(var line in File.ReadAllLines("input.txt"))
-            {
-                if (
+            var numberOfNice = File.ReadAllLines("input.txt")
+                .Count(line =>
                     !disallowed.Any(line.Contains)
                     && line.Count(c => vowels.Contains(c)) >= 3
                     && Enumerable.Range(0, line.Length - 1).Any(c => line[c] == line[c + 1])
-                )
-                    niceStrings.Add(line);
-            }
+                );
 
-            Console.WriteLine(niceStrings.Count());
+            Console.WriteLine(numberOfNice);
         }
     }
 }
