@@ -15,13 +15,11 @@ namespace day_5_1
             var niceStrings = new List<string>();
             foreach(var line in File.ReadAllLines("input.txt"))
             {
-                if (disallowed.Any(line.Contains))
-                    continue;
-
-                if (line.Count(c => vowels.Contains(c)) < 3)
-                    continue;
-                
-                if (Enumerable.Range(0, line.Length - 1).Any(c => line[c] == line[c + 1]]))
+                if (
+                    !disallowed.Any(line.Contains)
+                    && line.Count(c => vowels.Contains(c)) >= 3
+                    && Enumerable.Range(0, line.Length - 1).Any(c => line[c] == line[c + 1])
+                )
                     niceStrings.Add(line);
             }
 
