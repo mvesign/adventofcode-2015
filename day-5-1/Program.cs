@@ -9,7 +9,7 @@ namespace day_5_1
     {
         static void Main(string[] args)
         {
-            var vowels = "a e i o u".Split(" ").ToArray();
+            const string vowels = "aeiou";
             var disallowed = new [] 
             {
                 "ab", "cd", "pq", "xy"
@@ -21,7 +21,7 @@ namespace day_5_1
                 if (disallowed.Any(line.Contains))
                     continue;
 
-                if (vowels.Where(line.Contains).Count() < 3)
+                if (line.Count(c => vowels.Contains(c)) < 3)
                     continue;
                 
                 var prev = 0;
