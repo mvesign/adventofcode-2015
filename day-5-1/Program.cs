@@ -21,13 +21,8 @@ namespace day_5_1
                 if (line.Count(c => vowels.Contains(c)) < 3)
                     continue;
                 
-                var prev = 0;
-                for(var cur = 1; cur < line.Length; cur++, prev++)
-                    if (line[cur].Equals(line[prev]))
-                    {
-                        niceStrings.Add(line);
-                        break;
-                    }
+                if (Enumerable.Range(0, line.Length - 1).Any(c => line[c] == line[c + 1]]))
+                    niceStrings.Add(line);
             }
 
             Console.WriteLine(niceStrings.Count());
