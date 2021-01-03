@@ -10,10 +10,7 @@ namespace day_5_1
         static void Main(string[] args)
         {
             const string vowels = "aeiou";
-            var disallowed = new [] 
-            {
-                "ab", "cd", "pq", "xy"
-            };
+            var disallowed = new [] { "ab", "cd", "pq", "xy" };
 
             var niceStrings = new List<string>();
             foreach(var line in File.ReadAllLines("input.txt"))
