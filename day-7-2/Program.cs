@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace day_7_1
+namespace day_7_2
 {
     public static class Program
     {
         static void Main(string[] args)
         {
-            var signal = File.ReadAllLines("input.txt")
-                .Select(x => x.Split(' '))
-                .ToDictionary(x => x.Last())
+            var signalA = Program.GetInstructions()
                 .GetSignal("a");
+
+            var instructions = Program.GetInstructions();
+            instructions["b"] = new [] { signalA.ToString(), "->", "b" };
+
+            var signal = instructions.GetSignal("a");
             
             Console.WriteLine(signal);
         }
+
+        static Dictionary<string, string[]> GetInstructions() =>
+            File.ReadAllLines("input.txt")
+                .Select(x => x.Split(' '))
+                .ToDictionary(x => x.Last());
 
         static int GetSignal(this Dictionary<string, string[]> instructions, string input)
         {
