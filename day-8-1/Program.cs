@@ -13,7 +13,7 @@ namespace day_8_1
                 .Select(x =>
                     new
                     {
-                        Escaped = x,
+                        Original = x,
                         Raw = Regex.Replace(
                             x.Substring(1, x.Length -2) // Need to remove both quotes, at the start and end.
                                 .Replace("\\\"", "\"") // Representing the lone double-quote character
@@ -22,7 +22,7 @@ namespace day_8_1
                         )
                     }
                 )
-                .Sum(x => x.Escaped.Length - x.Raw.Length);
+                .Sum(x => x.Original.Length - x.Raw.Length);
 
             Console.WriteLine(count);
         }
