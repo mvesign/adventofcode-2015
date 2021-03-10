@@ -12,67 +12,62 @@ namespace day_9_1
         {
             const string pattern = @"^(\w+) to (\w+) = (\d+)$";
 
-            var routes = File.ReadAllLines("input.txt").Select(ParseRoute);
-            var cities = GetCities(routes).Distinct().ToArray();
-            var permutations = GetPermutations(cities, 0, cities.Length - 1);
-
+            var routes = File.ReadAllLines("input.txt").Select(Parse);
+            
+            var permutations = Permute(
+                routes.SelectMany(route => route.Item1).Distinct()
+            );
+            
             var distance = permutations.Select(p => GetDistance(p, routes)).Min();
 
             Console.WriteLine(distance);
 
-            Tuple<string, string, int> ParseRoute(string route)
+            Tuple<string[], int> Parse(string route)
             {
                 var match = Regex.Match(route, pattern);
                 return Tuple.Create(
-                    match.Groups[1].Value,
-                    match.Groups[2].Value,
+                    new []
+                    {
+                        match.Groups[1].Value,
+                        match.Groups[2].Value
+                    },
                     int.Parse(match.Groups[3].Value)
                 );
             }
 
-            IEnumerable<string> GetCities(IEnumerable<Tuple<string, string, int>> routes)
+            IEnumerable<IEnumerable<T>> Permute<T>(IEnumerable<T> sequence)
             {
-                foreach (var (from, to, distance) in routes)
+                var list = sequence.ToList();
+                if (!list.Any())
+                    yield return Enumerable.Empty<T>();
+
+                var startingIndex = 0;
+
+                foreach (var element in sequence)
                 {
-                    yield return from;
-                    yield return to;
+                    var index = startingIndex;
+                    var remaining = sequence.Where((e, i) => i != index);
+
+                    foreach (var remainder in Permute(remaining))
+                        yield return remainder.Prepend(element);
+
+                    startingIndex++;
                 }
             }
 
-            List<string[]> GetPermutations(string[] cities, int start, int end)
+            int GetDistance(IEnumerable<string> cities, IEnumerable<Tuple<string[], int>> routes)
             {
-                var result = new List<string[]>();
-                if (start == end)
-                    result.Add(cities);
-                else
-                    for(var i = start; i <= end; i++)
-                    {
-                        Swap(ref cities[start], ref cities[i]);
-                        result = result.Union(
-                                GetPermutations(cities, start + 1, end)
-                            )
-                            .ToList();
-                        Swap(ref cities[start], ref cities[i]);
-                    }
+                var array = cities.ToArray();
 
-                return result;
-            }
-
-            void Swap(ref string a, ref string b)
-            {
-                var temp = a;
-                a = b;
-                b = temp;
-            }
-
-            int GetDistance(string[] cities, IEnumerable<Tuple<string, string, int>> routes)
-            {
                 var distance = 0;
-                for(var i = 0; i < cities.Length - 1; i++)
-                    distance += routes.Where(r => r.Item1 == cities[i] && r.Item2 == cities[i+1])
-                        .Select(r => r.Item3)
-                        .Single();
-
+                for(var i = 0; i < array.Length - 1; i++)
+                {
+                    var matches = routes.Where(r => r.Item1[0] == array[i] && r.Item1[1] == array[i+1])
+                        .Select(r => r.Item2)
+                        .ToArray();
+                    if (matches.Length > 0)
+                        distance += matches.First();
+                }
                 return distance;
             }
         }
